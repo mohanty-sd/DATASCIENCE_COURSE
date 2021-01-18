@@ -1,0 +1,11 @@
+%% Show function and its translation
+f = @(x) (5-abs(x)).*(x>=-5 & x<=5); %Triangular function
+x = -10:.1:10;
+figure;
+plot(x,f(x))
+hold on
+plot(x,f(x-1))
+plot(x,f(x-2))
+legend('f(x)','f(x-1)','f(x-2)','interpreter','latex');
+grid on
+xlabel('
