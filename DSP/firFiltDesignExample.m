@@ -1,4 +1,5 @@
 %% FIR filter design example
+addpath ../SIGNALS
 %Sampling frequency
 fs = 2048 ;%Hz;
 
