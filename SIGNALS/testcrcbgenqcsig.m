@@ -6,7 +6,10 @@ a3=3;
 A = 10;
 % Instantaneous frequency after 1 sec is 
 maxFreq = a1+2*a2+3*a3;
-samplFreq = 5*maxFreq;
+%Nyqust frequency guess: 2 * max. instantaneous frequency
+nyqFreq = 2*maxFreq;
+%Sampling frequency
+samplFreq = 5*nyqFreq; 
 samplIntrvl = 1/samplFreq;
 
 % Time samples
@@ -20,6 +23,9 @@ sigVec = crcbgenqcsig(timeVec,A,[a1,a2,a3]);
 %Plot the signal 
 figure;
 plot(timeVec,sigVec,'Marker','.','MarkerSize',24);
+xlabel('Time (sec)');
+title('Sampled signal');
+
 
 %Plot the periodogram
 %--------------
@@ -37,6 +43,9 @@ fftSig = fftSig(1:kNyq);
 %Plot periodogram
 figure;
 plot(posFreq,abs(fftSig));
+xlabel('Frequency (Hz)');
+ylabel('|FFT|');
+title('Periodogram');
 
 %Plot a spectrogram
 %----------------
