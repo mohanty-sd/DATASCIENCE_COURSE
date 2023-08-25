@@ -1,4 +1,4 @@
-function tmpltFFTMat  = compLIGOdeglitch2pntmplt(nSmpls,Fs,sigParams)
+function tmpltFFTMat  = rstrct2pntmplt(nSmpls,Fs,sigParams)
 %Restricted 2PN templates for matched filtering
 
 
@@ -12,11 +12,6 @@ mass2 = sigParams.mass2; %Solar masses
 fMin = sigParams.fMin;%Hz
 %Plunge cutoff
 fMax = sigParams.fMax;%Hz
-%Initial phase
-%phi0 = sigParams.phi0;
-%Optional window in frequency domain (e.g. @bartlett)
-winName = sigParams.winName;
-
 
 chrpTimeVec = pn2chirp_mass2chtime(mass1*solMass, mass2*solMass, fMin);
 sigLen = sum([1,1,-1,1].*chrpTimeVec);
@@ -28,25 +23,41 @@ kNyq = floor(nSmpls/2)+1;
 posFreq = (0:(kNyq-1))/dataLen;
 
 %Convert chirp times to alpha coefficients in the phase function
-chrpAlphParams_prefac = pn2chirp_prefac_chtime2alph(fMin);
+chrpAlphParams_prefac = 2*pi*fMin*[0.6, 1, -1.5, 3, 1];
 
 %Convert chirp times to alpha coefficients in the phase function
-chrpAlphParams = pn2chirp_chtime2alph(chrpTimeVec,chrpAlphParams_prefac);
+chrpAlphParams = zeros(size(chrpAlphParams_prefac));
+chrpAlphParams(1:(end-1)) = chrpAlphParams_prefac(1:(end-1)).*chrpTimeVec;
+%Special term containing the linear combination of chirp times
+chrpAlphParams(end) = chrpAlphParams_prefac(end)*sum([1,1,-1,1].*chrpTimeVec);
+%chrpAlphParams = pn2chirp_chtime2alph(chrpTimeVec,chrpAlphParams_prefac);
 
 %Generate powers of frequency for the different terms in the phase function
 %that will be multiplied by the alpha coefficients
 [posFreqMat,fMinIndx,fMaxIndx] = pn2chirp_posfreqmat(dataLen, posFreq, fMin, fMax);
 
 %Generate argument psi(f) of phase exp(-1i*psi(f))
-%phaseFunc = pn2chirpfftphasefunc(posFreqMat, chrpAlphParams);
-phaseArg = pn2chirpftphasearg(posFreqMat, chrpAlphParams);
+phaseArg = chrpAlphParams*posFreqMat;
 
 %Generate signal DFT magnitude
-magFunc = pnrstrctfftmag(posFreq,fMinIndx,fMaxIndx, winName);
+magFunc = zeros(size(posFreq));
+magFunc(fMinIndx:fMaxIndx) = posFreq(fMinIndx:fMaxIndx).^(-7/6);
 
 %Generate signal DFT (two quadratures) for positive and negative frequencies 
-%tmpltFFTMat = pnrstrctchirpfthchs(nSmpls,magFunc,phaseArg,-phi0);
-tmpltFFTMat = pnrstrctchirpfthchs(nSmpls,magFunc,phaseArg);
+tmpltFFTMat = zeros(1,nSmpls);
+nPosFreq = length(magFunc);
+%Cosine quadrature (h_c)
+tmpltFFTMat(1,1:nPosFreq) = magFunc.*exp(-1i * phaseArg);
+%Sine quadrature (h_s) is cosine quadrature times exp(i*pi/2) = i
+tmpltFFTMat(2,1:nPosFreq) = tmpltFFTMat(1, 1:nPosFreq)*(1i);
+%Fill negative frequencies
+if ~mod(nSmpls,2)
+    %Even
+    tmpltFFTMat(:,(1+nPosFreq):end) = conj(tmpltFFTMat(:,(nPosFreq-1):-1:2));
+else
+    %Odd
+    tmpltFFTMat(:,(1+nPosFreq):end) = conj(tmpltFFTMat(:,nPosFreq:-1:2));
+end
 
 %Inverse FFT and plot
 %dataVec_sigVec = ifft(dataVec_fftSigVec(1,:));
