@@ -1,10 +1,6 @@
 function tmpltFFTMat  = rstrct2pntmplt(nSmpls,Fs,sigParams)
 %Restricted 2PN templates for matched filtering
 
-
-%Solar mass in Kg
-solMass = 1.9891e30; %Kg
-
 %2PN restricted chirp parameters
 mass1 = sigParams.mass1; %Solar masses
 mass2 = sigParams.mass2; %Solar masses
@@ -13,7 +9,7 @@ fMin = sigParams.fMin;%Hz
 %Plunge cutoff
 fMax = sigParams.fMax;%Hz
 
-chrpTimeVec = pn2chirp_mass2chtime(mass1*solMass, mass2*solMass, fMin);
+chrpTimeVec = dscrs_pn2chirp_mass2chtime(mass1, mass2, fMin);
 sigLen = sum([1,1,-1,1].*chrpTimeVec);
 disp(['Approximate signal length ',num2str(sigLen),' sec']);
 
@@ -34,7 +30,7 @@ chrpAlphParams(end) = chrpAlphParams_prefac(end)*sum([1,1,-1,1].*chrpTimeVec);
 
 %Generate powers of frequency for the different terms in the phase function
 %that will be multiplied by the alpha coefficients
-[posFreqMat,fMinIndx,fMaxIndx] = pn2chirp_posfreqmat(dataLen, posFreq, fMin, fMax);
+[posFreqMat,fMinIndx,fMaxIndx] = dscrs_pn2chirp_posfreqmat(dataLen, posFreq, fMin, fMax);
 
 %Generate argument psi(f) of phase exp(-1i*psi(f))
 phaseArg = chrpAlphParams*posFreqMat;

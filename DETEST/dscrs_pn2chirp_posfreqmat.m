@@ -1,5 +1,5 @@
-function [freqMat,varargout] = pn2chirp_posfreqmat(dataLen, posFreq, fMin, fMax)
-%M = PN2CHIRP_POSFREQMAT(L,F,Fmin,Fmax)
+function [freqMat,varargout] = dscrs_pn2chirp_posfreqmat(dataLen, posFreq, fMin, fMax)
+%M = DSCRS__PN2CHIRP_POSFREQMAT(L,F,Fmin,Fmax)
 %Generate the powers of normalized positive frequencies, F(k)/Fmin, required
 %in the computation of the 2PN phase function (for zero time of arrival). F
 %the vector of positive DFT frequencies.
@@ -10,6 +10,11 @@ function [freqMat,varargout] = pn2chirp_posfreqmat(dataLen, posFreq, fMin, fMax)
 %Returns the indices of Fmin and Fmax in Il and Iu.
 
 %Soumya D. Mohanty, Nov'22
+%Nov 5, 2023: Added the token 'dscrs_' to the function name as it was
+%conflicting with the same function in MATLABCODES/signals. We are using a
+%copy of the latter in DATASCIENCE_COURSE in order to not expose the
+%private MATLABCODES when sharing DATASCIENCE_COURSE in the GW data
+%analysis schools.
 
 minCutIndx = ceil(fMin*dataLen);
 maxCutIndx = floor(fMax*dataLen);
