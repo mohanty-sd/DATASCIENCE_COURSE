@@ -12,10 +12,16 @@ im = frame2im(frame);
 [imind,cm] = rgb2ind(im,256);
 imwrite(imind,cm,fileName,'gif', 'Loopcount',inf);
 for lp = 1:75
-    subplot(2,1,1)
+    %Plot both sig1 and sig2
+    subplot(3,1,1)
     plot(t,sig1,t,circshift(sig2,lp));
     axis([0,1,0,10]);
-    subplot(2,1,2)
+    %Plot the product of sig1 and sig2
+    subplot(3,1,2)
+    plot(t, sig1.*circshift(sig2,lp));
+    axis([0,1,-10,100]);
+    %Plot the sum of the product of sig1 and sig2
+    subplot(3,1,3)
     s12conv(lp)=sum(sig1.*circshift(sig2,lp))/samplingFreq;
     plot(t(1:75),s12conv);
     axis([0,1,0,10]);
