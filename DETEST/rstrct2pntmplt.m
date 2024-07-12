@@ -11,7 +11,7 @@ fMax = sigParams.fMax;%Hz
 
 chrpTimeVec = dscrs_pn2chirp_mass2chtime(mass1, mass2, fMin);
 sigLen = sum([1,1,-1,1].*chrpTimeVec);
-disp(['Approximate signal length ',num2str(sigLen),' sec']);
+%disp(['Approximate signal length ',num2str(sigLen),' sec']);
 
 %Generate positive DFT frequencies
 dataLen = (nSmpls-1)/Fs;
