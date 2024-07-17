@@ -23,8 +23,8 @@ signal = AmFmGen(dataX, A, b, f0, f1);
 figure
 plot(dataX, signal, 'Marker', '.', 'MarkerSize', 10)
 xlabel("time(second)")
-title("time_signal")
-%%plot periogram
+title("time signal")
+%%plot periograms
 
 %%fft
 fft_sig = fft(signal);
@@ -37,3 +37,16 @@ figure
 plot(pos_freq, abs(pos_val))
 xlabel("freqency(Hz)")
 ylabel("|FFT|")
+
+%%plot spectrogram
+winLen = 0.11;%second
+overLap = 0.1;%second
+winLenSample = floor(winLen*sample_freq);
+overLapSample = floor(overLap*sample_freq);
+figure
+[S, T, F] = spectrogram(signal, winLenSample, overLapSample, [], sample_freq);
+imagesc(T', F', abs(S).^2)
+axis xy
+xlabel("Time(second)")
+ylabel("Frequency(Hz)")
+colorbar
