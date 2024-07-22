@@ -23,7 +23,7 @@ fs = 1024;  % Test data 是1024
 fltrOrdr = 500;
 % 使用 pwelch 函数计算噪声功率谱密度
 [pxx, f] = pwelch(noise_data, [], [], [], fs);
-log_pxx = 10*log(pxx/2);
+log_pxx = 10*log10(pxx/2);
 % 绘制功率谱密度
 figure;
 plot(f, log_pxx);
@@ -34,17 +34,20 @@ ylabel('10*Log_{10} PSD');
 grid on;
 hold off;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-sdf
+
 Whittened= Lab3_Whitten(nSamples,[f,pxx],fltrOrdr,fs);
 
 
-figure;
+subplot(2,1,1)
 plot(t, data_values);
 xlabel('Time(s)');
 ylabel('Ampliltude');
-hold on;
-plot(t, 10*log(Whittened));
-legend('Original','Whittened');
+title('Original')
+subplot(2,1,2)
+plot(t, Whittened);
+xlabel('Time(s)');
+ylabel('Ampliltude');
+title('Whittened');
 grid on;
 
 
