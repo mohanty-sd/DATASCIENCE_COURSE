@@ -2,7 +2,7 @@
 filename = 'iLIGOSensitivity.txt';
 data = load(filename);
 
-
+fltrOrdr = 500;
 % 分别赋值给变量 t 和 data
 f = data(:, 1);
 T = data(:, 2);
@@ -40,7 +40,6 @@ title('Noise Realization')
 xlabel('Time(s)')
 ylabel('Noise Amplitude')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-fltrOrdr = 500;
 
 
 [pxx, f] = pwelch(outNoise, [], [], [], sampFreq);
