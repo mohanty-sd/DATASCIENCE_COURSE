@@ -9,8 +9,8 @@ fMin = sigParams.fMin;%Hz
 %Plunge cutoff
 fMax = sigParams.fMax;%Hz
 
-chrpTimeVec = dscrs_pn2chirp_mass2chtime(mass1, mass2, fMin);
-sigLen = sum([1,1,-1,1].*chrpTimeVec);
+[chrpTimeVec, sigLen] = dscrs_pn2chirp_mass2chtime(mass1, mass2, fMin);
+%sigLen = sum([1,1,-1,1].*chrpTimeVec);
 %disp(['Approximate signal length ',num2str(sigLen),' sec']);
 
 %Generate positive DFT frequencies

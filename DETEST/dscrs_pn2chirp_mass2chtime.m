@@ -29,6 +29,9 @@ function [chrpTVec,varargout] = dscrs_pn2chirp_mass2chtime(m1, m2, fMin, varargi
 %can be generated using the family of functions PN2CHIRP_PREFAC_ETAMUM2<X>
 %where X is tau0, tau1, tau1p5, or tau2.
 %
+%[C,T] = DSCRS_PN2CHIRP_MASS2CHTIME(M1, M2, Fmin, P)
+%Returns the approximate duration of the 2PN signal in T (seconds).
+%
 %[C,Pc] =  DSCRS_PN2CHIRP_MASS2CHTIME(M1, M2, Fmin, P)
 %Returns the structure Pc, a copy of the filled-in P. This can be used to
 %generate the constants for use in subsequent calls to this function.
@@ -94,8 +97,12 @@ chrpTVec(4) = constVals.cht2pre   * constVals.cht2f0 *...
 
            
 if nargout > 1
-    varargout{1} = constVals;
+    varargout{1} = sum([1,1,-1,1].*chrpTVec);
+    if nargout > 2
+        varargout{2} = constVals;
+    end
 end
+
 end
 
 function constVals = mass2chtime_constVals(fMin,geomFac)
