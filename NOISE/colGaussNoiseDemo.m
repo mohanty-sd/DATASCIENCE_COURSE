@@ -6,7 +6,7 @@ nSamples = 16384;
 %Time samples
 timeVec = (0:(nSamples-1))/sampFreq;
 
-%Target PSD given by the inline function handle
+%Target two-sided PSD given by the inline function handle
 targetPSD = @(f) (f>=100 & f<=300).*(f-100).*(300-f)/10000;
 
 %Plot PSD
