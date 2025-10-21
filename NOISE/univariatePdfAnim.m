@@ -36,6 +36,10 @@ for lp = 1:nTrials
     axis([rangeVal, -max(evntCrv/lp)/10, max(evntCrv/lp)]);
     title(num2str(lp));
     drawnow;
+    %Use the pause to set up screen recording
+    if lp == 1
+        pause(20);
+    end
     %Animation
 %     frame = getframe(h);
 %     im = frame2im(frame);
