@@ -2,10 +2,10 @@ function [normSigVec,normFac]=normsig4psd(sigVec, sampFreq, psdVec, snr)
 % Normalize a given signal to have a specified SNR in specified noise PSD
 % [NS,NF]=NORMSIG4PSD(S,Fs,Sn,SNR)
 % S is the signal vector to be normalized to have signal to noise ratio SNR
-% in noise with PSD specified by vector Sn. The PSD should be specified at
-% the positive DFT frequencies corresponding to the length of S and
-% sampling frequency Fs. The normalized signal vector is returned in NS and
-% the normalization factor is returned in NF.
+% in noise with two-sided PSD specified by vector Sn. The PSD should be
+% specified at the positive DFT frequencies corresponding to the length of
+% S and sampling frequency Fs. The normalized signal vector is returned in
+% NS and the normalization factor is returned in NF.
 
 %Soumya D. Mohanty, Mar 2019
 

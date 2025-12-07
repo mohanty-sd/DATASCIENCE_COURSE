@@ -1,9 +1,12 @@
 function innProd = innerprodpsd(xVec,yVec,sampFreq,psdVals)
 %P = INNERPRODPSD(X,Y,Fs,Sn)
 %Calculates the inner product of vectors X and Y for the case of Gaussian
-%stationary noise having a specified power spectral density. Sn is a vector
-%containing PSD values at the positive frequencies in the DFT of X
-%and Y. The sampling frequency of X and Y is Fs.
+%stationary noise having a specified two-sided power spectral density. Sn
+%is a vector containing PSD values at the positive frequencies in the DFT
+%of X and Y. The sampling frequency of X and Y is Fs.
+%NOTE: If estimating the PSD using pwelch, remember that it produces a
+%one-sided PSD for real data. Hence, it should be divided by 2 to get the
+%two-sided PSD.
 
 %Soumya D. Mohanty, Mar 2019
 
